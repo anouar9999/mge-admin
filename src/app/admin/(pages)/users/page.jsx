@@ -291,7 +291,7 @@ const UserManagement = () => {
         <p className="text-gray-400 mb-4">{error}</p>
         <button
           onClick={fetchUsers}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+          className="px-4 py-2  text-white rounded-md transition-colors"
         >
           Try Again
         </button>
@@ -353,7 +353,7 @@ const UserManagement = () => {
 
       {/* Empty State */}
       {filteredUsers.length === 0 && (
-        <div className="text-center py-16 bg-gray-800 rounded-xl mt-8">
+        <div className="text-center py-16  rounded-xl mt-8">
           <Users size={48} className="mx-auto mb-4 text-gray-500" />
           <h3 className="text-xl text-white mb-2">No users found</h3>
           <p className="text-gray-400 mb-6">Try adjusting your search or filters</p>
@@ -362,7 +362,7 @@ const UserManagement = () => {
               setSearchTerm('');
               setFilterType('all');
             }}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+            className="px-4 py-2 bg-secondary text-white angular-cut transition-colors"
           >
             Clear Filters
           </button>
