@@ -11,10 +11,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/loading.js"
     ],
-    "/admin/(pages)/users/page": [
+    "/admin/(pages)/tournaments/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/admin/(pages)/users/page.js"
+      "static/chunks/app/admin/(pages)/tournaments/page.js"
     ],
     "/admin/layout": [
       "static/chunks/webpack.js",
@@ -26,15 +26,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/admin/loading.js"
     ],
-    "/admin/(pages)/teams/page": [
+    "/admin/(pages)/tournament/[slug]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/admin/(pages)/teams/page.js"
-    ],
-    "/admin/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/admin/page.js"
+      "static/chunks/app/admin/(pages)/tournament/[slug]/page.js"
     ]
   }
 }

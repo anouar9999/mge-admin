@@ -164,14 +164,9 @@ const TabComponent = ({ activeTab, onTabChange, tournament,gameData }) => {
       case 'Participants':
         return <ParticipantList tournamentId={tournament.id} />;
       case 'Bracket':
-        return tournament.format_des_qualifications === 'Single Elimination' ? (
-          <TournamentBracket
-            tournamentId={tournament.id}
-            isTeamTournament={tournament.participation_type === 'team'}
-          />
-        ) : (
-          <DoubleEliminationBracket tournamentId={tournament.id} />
-        );
+        return <TournamentBracket
+       
+      />;
       default:
         return <p className="text-center text-gray-400">Content for {activeTab}</p>;
     }
