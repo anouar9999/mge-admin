@@ -1,4 +1,3 @@
 {
-  "/admin/(pages)/tournaments/page": "app/admin/(pages)/tournaments/page.js",
   "/admin/(pages)/tournament/[slug]/page": "app/admin/(pages)/tournament/[slug]/page.js"
 }

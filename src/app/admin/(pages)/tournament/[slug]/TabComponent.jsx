@@ -120,7 +120,7 @@ const TabComponent = ({ activeTab, onTabChange, tournament,gameData }) => {
                                   <img
                                   className='rounded-lg'
                                     width={'50px'}
-                                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${gameData.game_name}`}
+                                    src={`${gameData.game_image}`}
                                   />
                                 }
                                 value={gameData.game_name}
@@ -164,7 +164,7 @@ const TabComponent = ({ activeTab, onTabChange, tournament,gameData }) => {
       case 'Participants':
         return <ParticipantList tournamentId={tournament.id} />;
       case 'Bracket':
-        return <TournamentBracket
+        return <TournamentBracket tournamentId={tournament.id}
        
       />;
       default:

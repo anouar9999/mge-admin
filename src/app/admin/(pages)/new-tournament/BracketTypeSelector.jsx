@@ -1,18 +1,10 @@
 import React from 'react';
 import { Check } from 'lucide-react';
 
-/**
- * Component for selecting tournament bracket format
- * 
- * @param {Object} props Component props
- * @param {string} props.value Current selected bracket type
- * @param {Function} props.onChange Function called when selection changes
- * @param {string} props.name Optional field name (defaults to 'format_des_qualifications')
- */
 const BracketTypeSelector = ({ 
   value, 
   onChange, 
-  name = 'format_des_qualifications' 
+  name = 'bracket_type' 
 }) => {
   const bracketTypes = [
     { 
@@ -29,6 +21,11 @@ const BracketTypeSelector = ({
       id: 'Round Robin', 
       label: 'Round Robin', 
       description: 'Tous les participants s\'affrontent' 
+    },
+    { 
+      id: 'Battle Royale', 
+      label: 'Battle Royale', 
+      description: 'top 3' 
     }
   ];
 

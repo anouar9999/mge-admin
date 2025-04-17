@@ -83,7 +83,7 @@ const TournamentCreation = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const [formData, setFormData] = useState({
-    nom_des_qualifications: '',
+    name: '',
     competition_type: '',
     participation_type: 'participant',
     start_date: '',
@@ -95,7 +95,7 @@ const TournamentCreation = () => {
     rules: '',
     nombre_maximum: '',
     prize_pool: '',
-    format_des_qualifications: 'Single Elimination',
+    format_des_qualifications: '',
     type_de_match: '',
     type_de_jeu: '',
     match_format: '',
@@ -383,7 +383,7 @@ const TournamentCreation = () => {
                   )}
 
                   <BracketTypeSelector
-                    value={formData.format_des_qualifications}
+                    value={formData.bracket_type}
                     onChange={handleChange}
                   />
                 </div>
