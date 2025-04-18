@@ -1271,3 +1271,82 @@
  .react-datepicker {
    animation: fadeInUp 0.3s ease-out;
  }
+ /* Add these animations to your CSS or Tailwind config */
+
+@keyframes fadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+ }
+ 
+ @keyframes scaleIn {
+   from { transform: scale(0.9); opacity: 0; }
+   to { transform: scale(1); opacity: 1; }
+ }
+ 
+ @keyframes slideInLeft {
+   from { transform: translateX(-30px); opacity: 0; }
+   to { transform: translateX(0); opacity: 1; }
+ }
+ 
+ @keyframes slideInRight {
+   from { transform: translateX(30px); opacity: 0; }
+   to { transform: translateX(0); opacity: 1; }
+ }
+ 
+ @keyframes slideInUp {
+   from { transform: translateY(20px); opacity: 0; }
+   to { transform: translateY(0); opacity: 1; }
+ }
+ 
+ @keyframes shimmer {
+   0% { background-position: -200% 0; }
+   100% { background-position: 200% 0; }
+ }
+ 
+ @keyframes slowZoom {
+   from { transform: scale(1); }
+   to { transform: scale(1.05); }
+ }
+ 
+ /* Animation utility classes */
+ .animate-fadeIn {
+   animation: fadeIn 0.5s ease forwards;
+ }
+ 
+ .animate-scaleIn {
+   animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+ }
+ 
+ .animate-slideInLeft {
+   animation: slideInLeft 0.5s ease forwards;
+ }
+ 
+ .animate-slideInRight {
+   animation: slideInRight 0.5s ease forwards;
+ }
+ 
+ .animate-slideInUp {
+   animation: slideInUp 0.5s ease forwards;
+ }
+ 
+ .animate-shimmer {
+   background-size: 200% 100%;
+   animation: shimmer 2s infinite linear;
+ }
+ 
+ .animate-slowZoom {
+   animation: slowZoom 10s ease-in-out infinite alternate;
+ }
+ 
+ .animate-pulse {
+   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+ }
+ 
+ @keyframes pulse {
+   0%, 100% {
+     opacity: 1;
+   }
+   50% {
+     opacity: 0.7;
+   }
+ }

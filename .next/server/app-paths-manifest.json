@@ -1,4 +1,9 @@
 {
   "/not-found": "app/not-found.js",
-  "/admin/(pages)/tournament/[slug]/page": "app/admin/(pages)/tournament/[slug]/page.js"
+  "/admin/(pages)/tournament/[slug]/page": "app/admin/(pages)/tournament/[slug]/page.js",
+  "/admin/(pages)/tournaments/page": "app/admin/(pages)/tournaments/page.js",
+  "/admin/(pages)/edit-tournament/[id]/page": "app/admin/(pages)/edit-tournament/[id]/page.js",
+  "/admin/(pages)/users/page": "app/admin/(pages)/users/page.js",
+  "/admin/(pages)/teams/page": "app/admin/(pages)/teams/page.js",
+  "/admin/page": "app/admin/page.js"
 }
