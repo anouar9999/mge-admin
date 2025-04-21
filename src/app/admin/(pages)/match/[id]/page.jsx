@@ -150,7 +150,7 @@ const MatchDetailsPage = () => {
 
       {/* ScoreInputDialog component (kept from your existing code) */}
       <ScoreInputDialog
-        isOpen={isDialogOpen}
+        isOpen={true}
         closeDialog={() => setIsDialogOpen(false)}
         onSave={handleSaveScores}
         teamA={teamA}

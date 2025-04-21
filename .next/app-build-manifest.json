@@ -26,6 +26,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/admin/(pages)/tournaments/page.js"
     ],
+    "/admin/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/admin/page.js"
+    ],
     "/admin/(pages)/tournament/[slug]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

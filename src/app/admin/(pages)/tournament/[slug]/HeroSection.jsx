@@ -234,7 +234,7 @@ export const HeroSection = ({
                         rel="noopener noreferrer" 
                         className="text-blue-300 hover:text-blue-200 transition-colors"
                       >
-                        Watch Stream
+                      {tournament.stream_url} 
                       </a>
                     </div>
                   )}
