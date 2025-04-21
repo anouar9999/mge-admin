@@ -35,7 +35,7 @@ const StatCard = ({ title, value, icon: Icon, color, trend, trendValue }) => {
   const [iconColor, bgColor] = colorClass.split(' ');
   
   return (
-    <div className="bg-secondary rounded-xl p-6 
+    <div className="bg-secondary angular-cut p-6 
                    transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex-1">
