@@ -254,7 +254,7 @@ const LeagueOfLegendsProfile = () => {
                 id={tournament.id}
                 name={tournament.name}
                 startDate={tournament.start_date}
-                gameType={tournament.game.name}
+                game={tournament.game}
                 endDate={tournament.end_date}
                 status={tournament.status}
                 description={tournament.description}

@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { FaTimes, FaEdit, FaTrophy, FaFilter, FaCalendarAlt, FaUserFriends, FaCheck } from 'react-icons/fa';
+import {
+  FaTimes,
+  FaEdit,
+  FaTrophy,
+  FaFilter,
+  FaCalendarAlt,
+  FaUserFriends,
+  FaCheck,
+} from 'react-icons/fa';
 import { ChevronDown, ChevronUp, Trophy, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import CustomDropdown from './CustomDropdown';
@@ -19,8 +27,8 @@ const ScoreboardUpdater = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
 
   const updateScore = (team, increment) => {
     const newScore = Math.max(0, scores[team] + increment);
-    setScores(prev => ({ ...prev, [team]: newScore }));
-    
+    setScores((prev) => ({ ...prev, [team]: newScore }));
+
     // Trigger animation
     setAnimation({ team, direction: increment > 0 ? 'up' : 'down' });
     setTimeout(() => setAnimation({ team: null, direction: null }), 500);
@@ -40,7 +48,7 @@ const ScoreboardUpdater = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <motion.div 
+          <motion.div
             className="fixed inset-0 bg-black/75 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -59,9 +67,9 @@ const ScoreboardUpdater = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
               <div className="absolute -left-10 -top-20 w-64 h-64 bg-primary rounded-full blur-3xl"></div>
               <div className="absolute -right-10 -bottom-20 w-64 h-64 bg-blue-500 rounded-full blur-3xl"></div>
             </div>
-            
+
             {/* Close button */}
-            <button 
+            <button
               onClick={closeDialog}
               className="absolute top-4 right-4 text-gray-400 hover:text-white"
             >
@@ -77,12 +85,14 @@ const ScoreboardUpdater = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
               <div className="flex items-center justify-center space-x-4 w-full">
                 {[
                   { team: 'A', data: teamA },
-                  { team: 'B', data: teamB }
+                  { team: 'B', data: teamB },
                 ].map(({ team, data }) => (
                   <div key={team} className="flex flex-col items-center w-1/2">
                     <div className="relative mb-2">
                       <motion.div
-                        className={`p-3 rounded-xl ${winner === team ? 'ring-2 ring-yellow-400' : ''}`}
+                        className={`p-3 rounded-xl ${
+                          winner === team ? 'ring-2 ring-yellow-400' : ''
+                        }`}
                         animate={winner === team ? { scale: [1, 1.05, 1] } : {}}
                         transition={{ repeat: Infinity, duration: 2 }}
                       >
@@ -105,19 +115,19 @@ const ScoreboardUpdater = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
                         </AnimatePresence>
                       </motion.div>
                     </div>
-                    
+
                     <p className="text-gray-300 font-mono text-sm mb-1">TEAM {team}</p>
                     <p className="font-custom text-xl text-white mb-6">{data.name}</p>
-                    
+
                     {/* Score controls */}
                     <div className="flex items-center">
-                     
-                      
                       <div className="relative w-24 h-20 flex items-center justify-center bg-gray-800 border-t-2 border-b-2 border-gray-700">
                         <AnimatePresence>
                           {animation.team === team && (
                             <motion.span
-                              className={`absolute text-3xl font-bold ${animation.direction === 'up' ? 'text-green-400' : 'text-red-400'}`}
+                              className={`absolute text-3xl font-bold ${
+                                animation.direction === 'up' ? 'text-green-400' : 'text-red-400'
+                              }`}
                               initial={{ opacity: 1, y: animation.direction === 'up' ? 20 : -20 }}
                               animate={{ opacity: 0, y: animation.direction === 'up' ? -20 : 20 }}
                               exit={{ opacity: 0 }}
@@ -128,8 +138,6 @@ const ScoreboardUpdater = ({ isOpen, closeDialog, onSave, teamA, teamB }) => {
                         </AnimatePresence>
                         <span className="text-5xl font-bold text-white">{scores[team]}</span>
                       </div>
-                      
-                 
                     </div>
                   </div>
                 ))}
@@ -174,12 +182,12 @@ const GroupModal = ({
   const [currentRound, setCurrentRound] = useState(0);
   const [statusFilter, setStatusFilter] = useState('all');
   const [sortOption, setSortOption] = useState('default');
-  console.log(group);
+  console.log(group.matches[currentRound][currentRound].id);
   // State for edit popup
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [currentMatchData, setCurrentMatchData] = useState({
     roundIndex: null,
-    matchIndex: null,
+    matchIndex: group.matches[currentRound][currentRound].id,
     teamA: null,
     teamB: null,
   });
@@ -218,32 +226,32 @@ const GroupModal = ({
   };
 
   // Open edit dialog
-  const handleEditMatch = (roundIndex, matchIndex, team1Name, team2Name) => {
-    const team1 = getTeamInfo(team1Name);
-    const team2 = getTeamInfo(team2Name);
-    console.log('ere');
-    console.log(team1);
+  // const handleEditMatch = (roundIndex, matchIndex, team1Name, team2Name) => {
+  //   const team1 = getTeamInfo(team1Name);
+  //   const team2 = getTeamInfo(team2Name);
+  //   console.log('ere');
+  //   console.log(team1);
 
-    // Prepare team data for dialog
-    const teamA = {
-      name: team1Name,
-      logo: team1.image || 'https://placehold.co/200',
-    };
+  //   // Prepare team data for dialog
+  //   const teamA = {
+  //     name: team1Name,
+  //     logo: team1.image || 'https://placehold.co/200',
+  //   };
 
-    const teamB = {
-      name: team2Name,
-      logo: team2.image || 'https://placehold.co/200',
-    };
+  //   const teamB = {
+  //     name: team2Name,
+  //     logo: team2.image || 'https://placehold.co/200',
+  //   };
 
-    setCurrentMatchData({
-      roundIndex,
-      matchIndex,
-      teamA,
-      teamB,
-    });
+  //   setCurrentMatchData({
+  //     roundIndex,
+  //     matchIndex,
+  //     teamA,
+  //     teamB,
+  //   });
 
-    setEditDialogOpen(true);
-  };
+  //   setEditDialogOpen(true);
+  // };
 
   // Handle saving match result
   const handleSaveScores = (scoreA, scoreB) => {
@@ -253,8 +261,8 @@ const GroupModal = ({
     const updatedResult = {
       groupId: group.id,
       round: roundIndex,
-      matchIndex: matchIndex,
-      team1Score: scoreA,
+      matchIndex: 0,
+      team1Score: 1,
       team2Score: scoreB,
     };
 
@@ -367,48 +375,48 @@ const GroupModal = ({
 
             {/* Round Selection */}
             <div className="flex items-center ml-auto">
-                  <div className="text-xs uppercase tracking-wider text-gray-400 mr-3  px-2 py-1 rounded-lg">
-                    <FaCalendarAlt className="inline mr-1" /> ROUND
-                  </div>
-                  <div className="flex rounded-lg bg-secondary p-1">
-                    {Array.from({ length: totalRounds }, (_, index) => (
-                      <motion.button
-                        key={index}
-                        onClick={() => setCurrentRound(index)}
-                        className={`px-4 py-1.5 text-sm rounded-md transition-all duration-200 ${
-                          currentRound === index
-                            ? 'bg-gradient-to-r from-primary to-primary/85 text-white font-medium shadow-lg'
-                            : 'bg-transparent text-gray-400 hover:text-white'
-                        }`}
-                        whileHover={{ scale: currentRound === index ? 1 : 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        {index + 1}
-                      </motion.button>
-                    ))}
-                  </div>
-                </div>
+              <div className="text-xs uppercase tracking-wider text-gray-400 mr-3  px-2 py-1 rounded-lg">
+                <FaCalendarAlt className="inline mr-1" /> ROUND
+              </div>
+              <div className="flex rounded-lg bg-secondary p-1">
+                {Array.from({ length: totalRounds }, (_, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => setCurrentRound(index)}
+                    className={`px-4 py-1.5 text-sm rounded-md transition-all duration-200 ${
+                      currentRound === index
+                        ? 'bg-gradient-to-r from-primary to-primary/85 text-white font-medium shadow-lg'
+                        : 'bg-transparent text-gray-400 hover:text-white'
+                    }`}
+                    whileHover={{ scale: currentRound === index ? 1 : 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {index + 1}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Modal Body - Scrollable Content */}
         <div className="overflow-y-auto h-[calc(90vh-130px)]">
           <div className="p-6 space-y-6">
-          {processedMatches.length > 0 ? (
-  processedMatches.map((match) => (
-    <InteractiveMatchCard
-      key={`match-${currentRound}-${match.matchIndex}`}
-      match={match}
-      currentRound={currentRound}
-      onSaveResult={onSaveResult}
-      groupId={group.id}
-    />
-  ))
-) : (
-  <div className="text-center py-8 bg-gray-900/20 rounded-lg border border-gray-800">
-    <p className="text-gray-400">No matches found for this round</p>
-  </div>
-)}
+            {group.matches.length > 0 ? (
+              group.matches.map((match) => (
+                <InteractiveMatchCard
+                  key={`match-${currentRound}-${match.matchIndex}`}
+                  match={match[currentRound]}
+                  currentRound={currentRound}
+                  onSaveResult={onSaveResult}
+                  groupId={group.id}
+                />
+              ))
+            ) : (
+              <div className="text-center py-8 bg-gray-900/20 rounded-lg border border-gray-800">
+                <p className="text-gray-400">No matches found for this round</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -429,42 +437,41 @@ export default GroupModal;
 const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [scores, setScores] = useState({
-    team1: match.result.team1Score === '-' ? 0 : parseInt(match.result.team1Score),
-    team2: match.result.team2Score === '-' ? 0 : parseInt(match.result.team2Score)
+    team1: match.team1_score  === null ? 0 : parseInt(match.team1_score),
+    team2: match.team2_score    === null ? 0 : parseInt(match.team2_score),
   });
   const [animation, setAnimation] = useState({ team: null, direction: null });
 
   // Update score function
   const updateScore = (team, increment) => {
     const newScore = Math.max(0, scores[team] + increment);
-    setScores(prev => ({ ...prev, [team]: newScore }));
-    
+    setScores((prev) => ({ ...prev, [team]: newScore }));
+
     // Trigger animation
     setAnimation({ team, direction: increment > 0 ? 'up' : 'down' });
     setTimeout(() => setAnimation({ team: null, direction: null }), 500);
   };
-
+console.log(scores.team2)
   // Save the score
   const handleSaveScores = () => {
     const updatedResult = {
       groupId: groupId,
       round: currentRound,
-      matchIndex: match.matchIndex,
+      matchIndex: match.id,
       team1Score: scores.team1,
-      team2Score: scores.team2
+      team2Score: scores.team2,
     };
-    
+
     onSaveResult(updatedResult);
     setIsEditing(false);
   };
-
   // Winner determination
   const getWinner = () => {
     if (scores.team1 > scores.team2) return 'team1';
     if (scores.team2 > scores.team1) return 'team2';
     return null;
   };
-  
+
   const winner = getWinner();
 
   return (
@@ -478,7 +485,7 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
             <div
               className="absolute inset-0"
               style={{
-                backgroundImage: match.team1Image ? `url(${match.team1Image})` : 'none',
+                backgroundImage: match.team1_logo ? `url(${process.env.NEXT_PUBLIC_BACKEND_URL}${match.team1_logo})` : 'none',
                 backgroundSize: 'cover',
                 backgroundPosition: 'left center',
                 opacity: 0.2,
@@ -487,7 +494,8 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
             <div
               className="absolute inset-0"
               style={{
-                background: 'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%)',
+                background:
+                  'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%)',
               }}
             ></div>
           </div>
@@ -497,7 +505,7 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
             <div
               className="absolute inset-0"
               style={{
-                backgroundImage: match.team2Image ? `url(${match.team2Image})` : 'none',
+                backgroundImage: match.team2_logo ? `url(${process.env.NEXT_PUBLIC_BACKEND_URL}${match.team2_logo})` : 'none',
                 backgroundSize: 'cover',
                 backgroundPosition: 'right center',
                 opacity: 0.2,
@@ -506,7 +514,8 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
             <div
               className="absolute inset-0"
               style={{
-                background: 'linear-gradient(to left, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%)',
+                background:
+                  'linear-gradient(to left, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%)',
               }}
             ></div>
           </div>
@@ -515,7 +524,8 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
           <div
             className="absolute inset-y-0 left-1/2 transform -translate-x-1/2 w-16"
             style={{
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,1), rgba(0,0,0,0.9))',
+              background:
+                'linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,1), rgba(0,0,0,0.9))',
             }}
           ></div>
         </div>
@@ -525,23 +535,27 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
           <div className="flex items-center justify-between w-full">
             {/* Team A */}
             <div className="flex flex-col items-end text-right w-2/5">
-              <motion.div 
+              <motion.div
                 className={`relative ${winner === 'team1' && !isEditing ? 'scale-105' : ''}`}
-                animate={winner === 'team1' && !isEditing ? { 
-                  x: [0, 2, -2, 0],
-                  transition: { repeat: Infinity, duration: 2 }
-                } : {}}
+                animate={
+                  winner === 'team1' && !isEditing
+                    ? {
+                        x: [0, 2, -2, 0],
+                        transition: { repeat: Infinity, duration: 2 },
+                      }
+                    : {}
+                }
               >
                 <span className="text-xs font-mono font-semibold text-gray-400 tracking-wide uppercase">
                   TEAM A
                 </span>
                 <span className="text-lg font-valorant hover:text-primary transition-all duration-300 truncate block">
-                  {match.team1Name}
+                  {match.team1_name}
                 </span>
-                
+
                 {/* Winner trophy */}
                 {winner === 'team1' && !isEditing && (
-                  <motion.div 
+                  <motion.div
                     className="absolute -top-3 -left-6"
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -569,12 +583,14 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
                       >
                         <ChevronUp size={18} className="text-green-300" />
                       </motion.button>
-                      
+
                       <div className="relative w-10 h-12 flex items-center justify-center bg-gray-800/80">
                         <AnimatePresence>
                           {animation.team === 'team1' && (
                             <motion.span
-                              className={`absolute text-xl font-bold ${animation.direction === 'up' ? 'text-green-400' : 'text-red-400'}`}
+                              className={`absolute text-xl font-bold ${
+                                animation.direction === 'up' ? 'text-green-400' : 'text-red-400'
+                              }`}
                               initial={{ opacity: 1, y: animation.direction === 'up' ? 10 : -10 }}
                               animate={{ opacity: 0, y: animation.direction === 'up' ? -10 : 10 }}
                               exit={{ opacity: 0 }}
@@ -585,7 +601,7 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
                         </AnimatePresence>
                         <span className="text-2xl font-bold text-white">{scores.team1}</span>
                       </div>
-                      
+
                       <motion.button
                         onClick={() => updateScore('team1', -1)}
                         className="bg-red-500/30 hover:bg-red-500/50 rounded-b w-10 h-8 flex items-center justify-center"
@@ -596,10 +612,10 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
                       </motion.button>
                     </div>
                   </div>
-                  
+
                   {/* VS */}
                   <div className="text-lg font-extrabold text-gray-500 px-1">VS</div>
-                  
+
                   {/* Team B Score Controls */}
                   <div className="relative">
                     <div className="flex flex-col">
@@ -611,12 +627,14 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
                       >
                         <ChevronUp size={18} className="text-green-300" />
                       </motion.button>
-                      
+
                       <div className="relative w-10 h-12 flex items-center justify-center bg-gray-800/80">
                         <AnimatePresence>
                           {animation.team === 'team2' && (
                             <motion.span
-                              className={`absolute text-xl font-bold ${animation.direction === 'up' ? 'text-green-400' : 'text-red-400'}`}
+                              className={`absolute text-xl font-bold ${
+                                animation.direction === 'up' ? 'text-green-400' : 'text-red-400'
+                              }`}
                               initial={{ opacity: 1, y: animation.direction === 'up' ? 10 : -10 }}
                               animate={{ opacity: 0, y: animation.direction === 'up' ? -10 : 10 }}
                               exit={{ opacity: 0 }}
@@ -627,7 +645,7 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
                         </AnimatePresence>
                         <span className="text-2xl font-bold text-white">{scores.team2}</span>
                       </div>
-                      
+
                       <motion.button
                         onClick={() => updateScore('team2', -1)}
                         className="bg-red-500/30 hover:bg-red-500/50 rounded-b w-10 h-8 flex items-center justify-center"
@@ -642,21 +660,37 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
               ) : (
                 /* Display Mode - Score Display */
                 <div className="flex items-center space-x-2">
-                  <span className={`text-3xl font-free-fire ${match.played ? 'text-primary' : 'text-gray-600'}`}>
-                    {match.result.team1Score}
+                  <span
+                    className={`text-3xl font-free-fire ${
+                      match.played ? 'text-primary' : 'text-primary'
+                    }`}
+                  >
+                    {scores.team1}
                   </span>
-                  
-                  <div className={`text-xl font-extrabold relative px-2 ${match.played ? 'text-white' : 'text-gray-600'}`}>
+
+                  <div
+                    className={`text-xl font-extrabold relative px-2 ${
+                      match.played ? 'text-white' : 'text-gray-600'
+                    }`}
+                  >
                     VS
-                    <span className={`absolute -bottom-1 left-0 w-full h-0.5 ${match.played ? 'bg-primary' : 'bg-gray-700'}`}></span>
+                    <span
+                      className={`absolute -bottom-1 left-0 w-full h-0.5 ${
+                        match.played ? 'bg-primary' : 'bg-primary'
+                      }`}
+                    ></span>
                   </div>
-                  
-                  <span className={`text-3xl font-free-fire ${match.played ? 'text-primary' : 'text-gray-600'}`}>
-                    {match.result.team2Score}
+
+                  <span
+                    className={`text-3xl font-free-fire ${
+                      match.played ? 'text-primary' : 'text-primary'
+                    }`}
+                  >
+                    {scores.team2}
                   </span>
                 </div>
               )}
-              
+
               {/* Edit/Save Controls */}
               <div className="absolute -top-8">
                 {isEditing ? (
@@ -685,23 +719,27 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
 
             {/* Team B */}
             <div className="flex flex-col items-start text-left w-2/5">
-              <motion.div 
+              <motion.div
                 className={`relative ${winner === 'team2' && !isEditing ? 'scale-105' : ''}`}
-                animate={winner === 'team2' && !isEditing ? { 
-                  x: [0, 2, -2, 0],
-                  transition: { repeat: Infinity, duration: 2 }
-                } : {}}
+                animate={
+                  winner === 'team2' && !isEditing
+                    ? {
+                        x: [0, 2, -2, 0],
+                        transition: { repeat: Infinity, duration: 2 },
+                      }
+                    : {}
+                }
               >
                 <span className="text-xs font-mono font-semibold text-gray-400 tracking-wide uppercase">
                   TEAM B
                 </span>
                 <span className="text-lg font-valorant hover:text-primary transition-all duration-300 truncate block">
-                  {match.team2Name}
+                  {match.team2_name}
                 </span>
-                
+
                 {/* Winner trophy */}
                 {winner === 'team2' && !isEditing && (
-                  <motion.div 
+                  <motion.div
                     className="absolute -top-3 -right-6"
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -714,13 +752,17 @@ const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) =>
             </div>
           </div>
         </div>
-        
+
         {/* Editing indicator - pulsing border */}
         {isEditing && (
-          <motion.div 
+          <motion.div
             className="absolute inset-0 rounded-lg border-2 border-primary pointer-events-none"
-            animate={{ 
-              boxShadow: ['0 0 0 rgba(249, 115, 22, 0)', '0 0 8px rgba(249, 115, 22, 0.8)', '0 0 0 rgba(249, 115, 22, 0)'],
+            animate={{
+              boxShadow: [
+                '0 0 0 rgba(249, 115, 22, 0)',
+                '0 0 8px rgba(249, 115, 22, 0.8)',
+                '0 0 0 rgba(249, 115, 22, 0)',
+              ],
             }}
             transition={{ duration: 2, repeat: Infinity }}
           />

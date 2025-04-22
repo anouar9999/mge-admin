@@ -35,7 +35,7 @@ const TournamentCard = ({
   image,
   bracket_type,
   slug,
-  gameType,
+  game,
   participationType,
   bracketType,
   format_des_qualifications,
@@ -47,7 +47,6 @@ const TournamentCard = ({
   isFeatured = false,
 
   tags = [],
-  organizer = { name: 'MGE', logo: '/images/mge-logo.png' },
 }) => {
   const [timeRemaining, setTimeRemaining] = useState('');
   const [isHovered, setIsHovered] = useState(false);
@@ -223,7 +222,7 @@ const TournamentCard = ({
 
   // Dynamic font class based on game type
   const getGameTypeFont = () => {
-    switch (gameType) {
+    switch (game.name) {
       case 'Valorant':
         return 'font-valorant';
       case 'Free Fire':
@@ -239,7 +238,7 @@ const TournamentCard = ({
 
   // Badge color and letter based on game type
   const getBadgeInfo = () => {
-    switch (gameType?.toLowerCase()) {
+    switch (game.name?.toLowerCase()) {
       case 'valorant':
         return { color: 'bg-red-500', letter: 'V' };
       case 'free fire':
@@ -290,23 +289,23 @@ const TournamentCard = ({
   return (
     <Link href={`/admin/tournament/${slug}`}>
       <div
-        className="bg-secondary  overflow-hidden shadow-lg  transition-all duration-300 flex flex-col h-full group relative hover:shadow-xl "
+        className="bg-secondary  overflow-hidden shadow-lg angular-cut transition-all duration-300 flex flex-col h-full group relative hover:shadow-xl "
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Enhanced Status badge */}
         <div
-          className={`absolute top-2 right-2 ${statusInfo.color} ${statusInfo.textColor} text-xs px-2 py-1 rounded-lg z-10 flex items-center ${statusInfo.animation} shadow-md`}
+          className={`absolute top-0 right-0 ${statusInfo.color} ${statusInfo.textColor} text-xs px-2 py-1  z-10 flex items-center ${statusInfo.animation} shadow-md`}
         >
           {statusInfo.icon}
           <span className="font-semibold">{statusInfo.label}</span>
         </div>
 
         {/* Countdown timer with enhanced styling */}
-        <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-lg z-10 flex items-center">
+        {/* <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-lg z-10 flex items-center">
           <Clock className="w-3 h-3 mr-1 text-orange-mge" />
           <span className="font-mono">{timeRemaining}</span>
-        </div>
+        </div> */}
 
         {/* Quick action buttons - visible on hover */}
         <div
@@ -338,24 +337,30 @@ const TournamentCard = ({
             }`}
           ></div>
 
-          {/* Organizer badge - positioned at top left corner */}
-          <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm p-1 rounded-md flex items-center">
-            <img src={organizer.logo} alt={organizer.name} className="w-4 h-4 rounded-full" />
-            <span className="text-white text-xs ml-1 font-medium">{organizer.name}</span>
-          </div>
 
           {/* Game type badge with enhanced styling */}
-          <div className="absolute bottom-2 left-2 z-10">
-            <div className="flex items-center bg-black/70 backdrop-blur-sm p-1 rounded-md">
-              <Gamepad2 className="w-3 h-3 text-orange-mge mr-1" />
-              <span className={`text-white text-xs tracking-widest font-custom`}>{gameType}</span>
-              <div
-                className={`ml-1 ${badgeInfo.color} w-4 h-4 rounded-sm flex items-center justify-center text-white text-xs font-bold`}
-              >
-                {badgeInfo.letter}
-              </div>
-            </div>
-          </div>
+          <div 
+  className="absolute bottom-0 left-0 px-4 py-1 text-xs flex items-center  overflow-hidden "
+  style={{ 
+    backgroundImage: `url(${game.image})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backdropFilter: 'blur(8px)'
+  }}
+>
+  {/* Dark overlay */}
+  <div 
+    className="absolute inset-0 bg-black/50 z-0"
+    style={{ mixBlendMode: 'multiply' }}
+  ></div>
+  
+  {/* Content (on top of the overlay) */}
+  <span className={`${fontClass}  ${game.name == 'Street Fighter'
+                ? 'text-[9px] tracking-widest'
+                : ''} tracking-widest relative z-10 text-white`}>
+    {game.name}
+  </span>
+</div>
         </div>
 
         {/* Card content with more details */}
@@ -372,7 +377,7 @@ const TournamentCard = ({
           {/* Tournament title with improved styling */}
           <h3
             className={`text-white ${
-              gameType == 'Street Fighter'
+              game.name == 'Street Fighter'
                 ? 'text-[10px] tracking-widest'
                 : 'text-xl tracking-wider'
             }    ${fontClass} mb-1 line-clamp-1 group-hover:text-orange-mge transition-colors duration-200`}
@@ -406,7 +411,7 @@ const TournamentCard = ({
           )}
 
           {/* Format and bracket type row */}
-          <div className="flex justify-between items-center mb-3 text-xs font-mono text-gray-400">
+          <div className="flex justify-between items-center mb-3 text-xs font-mono capitalize text-gray-400">
             <div className="flex items-center">
               <Users className="w-3 h-3 text-orange-mge mr-1" />
               <span>{participationType}</span>
@@ -467,7 +472,7 @@ const TournamentCard = ({
           )}
 
           {/* Prize pool and join button with hover effect */}
-          <div className="flex items-center justify-end bg-blue-900/40 -mx-3 -mb-3 py-2 px-3 border-t border-gray-700/30 mt-auto group-hover:bg-orange-mge/20 transition-colors duration-300">
+          <div className="flex items-center justify-end bg- -mx-3 -mb-3 py-2 px-3 border-t border-gray-700/30 mt-auto group-hover:bg-orange-mge/20 transition-colors duration-300">
             <div className="flex flex-col items-end">
               <div className="flex items-center">
                 <div className="text-orange-mge text-[17px] font-custom">{prizePool} MAD</div>
