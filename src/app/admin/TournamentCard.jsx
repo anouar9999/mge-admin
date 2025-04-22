@@ -290,7 +290,7 @@ const TournamentCard = ({
   return (
     <Link href={`/admin/tournament/${slug}`}>
       <div
-        className="bg-secondary rounded-xl angular-cut overflow-hidden shadow-lg  transition-all duration-300 flex flex-col h-full group relative hover:shadow-xl "
+        className="bg-secondary  overflow-hidden shadow-lg  transition-all duration-300 flex flex-col h-full group relative hover:shadow-xl "
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
