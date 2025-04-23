@@ -6,8 +6,119 @@ import CustomDropdown from './CustomDropdown';
 import PlayoffsBracket from './components/brackets/PlayoffsBracket';
 import axios from 'axios';
 
-// API base URL - replace with your actual API base URL
+// Fake data for development and testing
+const FAKE_TOURNAMENT_DATA = {
+  tournament: {
+    id: 1,
+    name: "Summer Championship 2023",
+    description: "Annual summer gaming tournament",
+    start_date: "2023-06-15",
+    end_date: "2023-07-30",
+    status: "active"
+  },
+  groups: [
+    {
+      id: 1,
+      name: "Group A",
+      teams: [
+        { team_id: 1, team_name: "Phoenix Force", team_logo: "/uploads/teams/phoenix.png" },
+        { team_id: 2, team_name: "Shadow Dragons", team_logo: "/uploads/teams/dragons.png" },
+        { team_id: 3, team_name: "Crimson Titans", team_logo: "/uploads/teams/titans.png" },
+        { team_id: 4, team_name: "Azure Knights", team_logo: "/uploads/teams/knights.png" }
+      ],
+      matches: {
+        0: [
+          { id: 1, team1_id: 1, team2_id: 2, team1_score: 3, team2_score: 1, status: "completed" },
+          { id: 2, team1_id: 3, team2_id: 4, team1_score: 2, team2_score: 2, status: "completed" }
+        ],
+        1: [
+          { id: 3, team1_id: 1, team2_id: 3, team1_score: 4, team2_score: 0, status: "completed" },
+          { id: 4, team1_id: 2, team2_id: 4, team1_score: 2, team2_score: 3, status: "completed" }
+        ],
+        2: [
+          { id: 5, team1_id: 1, team2_id: 4, team1_score: 2, team2_score: 1, status: "completed" },
+          { id: 6, team1_id: 2, team2_id: 3, team1_score: 3, team2_score: 2, status: "completed" }
+        ]
+      },
+      standings: [
+        { team_id: 1, team_name: "Phoenix Force", team_logo: "/uploads/teams/phoenix.png", wins: 3, draws: 0, losses: 0, points: 9 },
+        { team_id: 2, team_name: "Shadow Dragons", team_logo: "/uploads/teams/dragons.png", wins: 1, draws: 0, losses: 2, points: 3 },
+        { team_id: 4, team_name: "Azure Knights", team_logo: "/uploads/teams/knights.png", wins: 1, draws: 1, losses: 1, points: 4 },
+        { team_id: 3, team_name: "Crimson Titans", team_logo: "/uploads/teams/titans.png", wins: 0, draws: 1, losses: 2, points: 1 }
+      ]
+    },
+    {
+      id: 2,
+      name: "Group B",
+      teams: [
+        { team_id: 5, team_name: "Emerald Vipers", team_logo: "/uploads/teams/vipers.png" },
+        { team_id: 6, team_name: "Golden Eagles", team_logo: "/uploads/teams/eagles.png" },
+        { team_id: 7, team_name: "Silver Wolves", team_logo: "/uploads/teams/wolves.png" },
+        { team_id: 8, team_name: "Obsidian Ravens", team_logo: "/uploads/teams/ravens.png" }
+      ],
+      matches: {
+        0: [
+          { id: 7, team1_id: 5, team2_id: 6, team1_score: 1, team2_score: 3, status: "completed" },
+          { id: 8, team1_id: 7, team2_id: 8, team1_score: 2, team2_score: 0, status: "completed" }
+        ],
+        1: [
+          { id: 9, team1_id: 5, team2_id: 7, team1_score: 2, team2_score: 2, status: "completed" },
+          { id: 10, team1_id: 6, team2_id: 8, team1_score: 4, team2_score: 1, status: "completed" }
+        ],
+        2: [
+          { id: 11, team1_id: 5, team2_id: 8, team1_score: 3, team2_score: 1, status: "completed" },
+          { id: 12, team1_id: 6, team2_id: 7, team1_score: 2, team2_score: 0, status: "completed" }
+        ]
+      },
+      standings: [
+        { team_id: 6, team_name: "Golden Eagles", team_logo: "/uploads/teams/eagles.png", wins: 3, draws: 0, losses: 0, points: 9 },
+        { team_id: 7, team_name: "Silver Wolves", team_logo: "/uploads/teams/wolves.png", wins: 1, draws: 1, losses: 1, points: 4 },
+        { team_id: 5, team_name: "Emerald Vipers", team_logo: "/uploads/teams/vipers.png", wins: 1, draws: 1, losses: 1, points: 4 },
+        { team_id: 8, team_name: "Obsidian Ravens", team_logo: "/uploads/teams/ravens.png", wins: 0, draws: 0, losses: 3, points: 0 }
+      ]
+    }
+  ]
+};
 
+// Fake playoff data
+const FAKE_PLAYOFF_DATA = {
+  has_playoffs: true,
+  bracket: {
+    rounds: [
+      {
+        name: "Semi-Finals",
+        matches: [
+          {
+            id: 13,
+            team1: { id: 1, name: "Phoenix Force", logo: "/uploads/teams/phoenix.png", score: 3 },
+            team2: { id: 7, name: "Silver Wolves", logo: "/uploads/teams/wolves.png", score: 1 },
+            winner_id: 1,
+            status: "completed"
+          },
+          {
+            id: 14,
+            team1: { id: 6, name: "Golden Eagles", logo: "/uploads/teams/eagles.png", score: 4 },
+            team2: { id: 4, name: "Azure Knights", logo: "/uploads/teams/knights.png", score: 2 },
+            winner_id: 6,
+            status: "completed"
+          }
+        ]
+      },
+      {
+        name: "Final",
+        matches: [
+          {
+            id: 15,
+            team1: { id: 1, name: "Phoenix Force", logo: "/uploads/teams/phoenix.png", score: 2 },
+            team2: { id: 6, name: "Golden Eagles", logo: "/uploads/teams/eagles.png", score: 3 },
+            winner_id: 6,
+            status: "completed"
+          }
+        ]
+      }
+    ]
+  }
+};
 
 const MultiGroupRoundRobinTournament = ({ tournamentId }) => {
   const [groups, setGroups] = useState([]);
@@ -41,7 +152,36 @@ const MultiGroupRoundRobinTournament = ({ tournamentId }) => {
       return;
     }
     
-    fetchTournamentGroups();
+    // Use fake data for development/testing
+    if (process.env.NODE_ENV === 'development') {
+      setTimeout(() => {
+        setTournamentData(FAKE_TOURNAMENT_DATA.tournament);
+        setGroups(FAKE_TOURNAMENT_DATA.groups);
+        
+        // Extract match results from fake data
+        const results = [];
+        FAKE_TOURNAMENT_DATA.groups.forEach(group => {
+          Object.entries(group.matches).forEach(([roundIndex, roundMatches]) => {
+            roundMatches.forEach((match, matchIndex) => {
+              if (match.team1_score !== null && match.team2_score !== null) {
+                results.push({
+                  groupId: group.id,
+                  round: parseInt(roundIndex),
+                  matchIndex: match.id,
+                  team1Score: match.team1_score,
+                  team2Score: match.team2_score
+                });
+              }
+            });
+          });
+        });
+        
+        setMatchResults(results);
+        setLoading(false);
+      }, 1000); // Simulate loading delay
+    } else {
+      fetchTournamentGroups();
+    }
   }, [tournamentId]);
 
   // Function to fetch tournament groups and matches
@@ -170,6 +310,15 @@ const MultiGroupRoundRobinTournament = ({ tournamentId }) => {
     if (activeTab !== 'playoffs') return;
     
     setPlayoffLoading(true);
+    
+    // Use fake playoff data for development/testing
+    if (process.env.NODE_ENV === 'development') {
+      setTimeout(() => {
+        setPlayoffData(FAKE_PLAYOFF_DATA);
+        setPlayoffLoading(false);
+      }, 1000); // Simulate loading delay
+      return;
+    }
     
     try {
       const response = await axios.get(
@@ -408,9 +557,9 @@ const TabButton = ({ active, onClick, icon, label }) => (
 );
 
 // Groups Overview Component
-const GroupsOverview = ({ groups, selectedGroup, setSelectedGroup, onOpenModal }) => {
+const GroupsOverview = ({ groups = [], selectedGroup, setSelectedGroup, onOpenModal }) => {
   // Function to sort teams by wins in descending order
-  const sortedGroups = groups.map(group => {
+  const sortedGroups = groups ? groups.map(group => {
     if (group.standings) {
       // Create a copy of standings to avoid mutating the original data
       const sortedStandings = [...group.standings].sort((a, b) => {
@@ -425,7 +574,7 @@ const GroupsOverview = ({ groups, selectedGroup, setSelectedGroup, onOpenModal }
       };
     }
     return group;
-  });
+  }) : [];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">

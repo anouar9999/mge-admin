@@ -59,13 +59,13 @@ const TournamentEdit = () => {
 
   const [formData, setFormData] = useState({
     id: id,
-    nom_des_qualifications: '',
+    name: '',
     competition_type: '',
     participation_type: 'participant',
     nombre_maximum: '',
     start_date: '',
     end_date: '',
-    status: '',
+    status: 'registration_open',
     description_des_qualifications: '',
     rules: '',
     prize_pool: '',
@@ -77,7 +77,7 @@ const TournamentEdit = () => {
 
 
 
-  const statusOptions = ['Ouvert aux inscriptions', 'En cours', 'Terminé', 'Annulé'];
+  const statusOptions = ['registration_open', 'En cours', 'Terminé', 'Annulé'];
 
   useEffect(() => {
     const fetchTournamentData = async () => {
@@ -205,7 +205,7 @@ const TournamentEdit = () => {
                 <input
                   type="text"
                   name="nom_des_qualifications"
-                  value={formData.nom_des_qualifications}
+                  value={formData.name}
                   onChange={handleChange}
                   className="w-full bg-gray-800 p-3 rounded-lg angular-cut"
                   required
@@ -280,6 +280,8 @@ const TournamentEdit = () => {
                   <option>Single Elimination</option>
                   <option>Double Elimination</option>
                   <option>Round Robin</option>
+                  <option>Battle Royale</option>
+
                 </select>
               </div>
 

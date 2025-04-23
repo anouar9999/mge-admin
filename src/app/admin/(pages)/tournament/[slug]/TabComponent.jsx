@@ -15,6 +15,8 @@ import ParticipantList from '@/app/admin/components/widgets/cards/ParticipantLis
 import TournamentBracket from '../../../TournamentBracket';
 import DoubleEliminationBracket from '@/app/admin/DoubleElminationBracket';
 import InfoCard from './InfoCard';
+import MultiGroupRoundRobinTournament from '../../../TournamentBracket';
+import BattleRoyale from '@/app/admin/components/brackets/BattleRoyal';
 
 const TabComponent = ({ activeTab, onTabChange, tournament,gameData }) => {
   const tabs = ['Overview', 'Waiting List', 'Participants', 'Bracket'];
@@ -163,10 +165,16 @@ const TabComponent = ({ activeTab, onTabChange, tournament,gameData }) => {
         return <WaitingList tournamentId={tournament.id} />;
       case 'Participants':
         return <ParticipantList tournamentId={tournament.id} />;
-      case 'Bracket':
-        return <TournamentBracket tournamentId={tournament.id}
-       
-      />;
+        case 'Bracket':
+          if (tournament.bracket_type === 'Single Elimination') {
+            return <MultiGroupRoundRobinTournament tournamentId={tournament.id}/>;
+          } else if (tournament.bracket_type === 'Double Elimination') {
+            return <MultiGroupRoundRobinTournament tournamentId={tournament.id}/>;
+          } else if (tournament.bracket_type === 'Battle Royale') {
+            return <BattleRoyale  tournamentId={tournament.id} />;
+          } else {
+            return <MultiGroupRoundRobinTournament tournamentId={tournament.id}/>;
+          }
       default:
         return <p className="text-center text-gray-400">Content for {activeTab}</p>;
     }

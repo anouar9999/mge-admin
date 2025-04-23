@@ -8,6 +8,7 @@ import LoadingOverlay from './Loading';
 import TournamentStatus from './TournamentStatus';
 import { formatDate } from './../../../../../utils/helpers';
 import { motion } from 'framer-motion';
+import ToastDemo from '@/app/admin/toast';
 
 export const HeroSection = ({
   updateTournamentStatus,
@@ -114,6 +115,52 @@ export const HeroSection = ({
     }
   };
 
+  // Handle button click based on status and bracket type
+  const handleActionButtonClick = () => {
+    if (tournament.status === 'registration_closed') {
+      // Special handling for "Start Tournament" based on bracket type
+      if (tournament.bracket_type === 'Battle Royale') {
+        // Fetch the Battle Royale leaderboard data first to check if it's properly set up
+        axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get_battle_royale_leaderboard.php?tournament_id=${tournamentId}`)
+          .then(response => {
+            if (response.data.success) {
+              
+            } else {
+              // Handle error case
+              toast.error('Failed to load Battle Royale data. Please try again.');
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching Battle Royale data:', error);
+            toast.error('An error occurred while loading Battle Royale data.');
+          });
+      } else if (tournament.bracket_type === 'Round Robin') {
+        // Navigate to Round Robin setup
+        axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tournament_round_robin.php?tournament_id=${tournamentId}`)
+        .then(response => {
+          if (response.data.success) {
+            
+          } else {
+            // Handle error case
+            console.log('Failed to load Battle Royale data. Please try again.');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching Battle Royale data:', error);
+          console.log('An error occurred while loading Battle Royale data.');
+        });      } else {
+        // For other bracket types, just update the status
+        updateTournamentStatus('ongoing');
+      }
+    } else {
+      // Standard status update for other statuses
+      let nextStatus;
+      if (tournament.status === 'registration_open') nextStatus = 'registration_closed';
+      else if (tournament.status === 'ongoing') nextStatus = 'completed';
+      
+      if (nextStatus) updateTournamentStatus(nextStatus);
+    }
+  };
   return (
     <div className="relative w-full overflow-hidden rounded-lg">
       {/* Hero container with better proportions */}
@@ -246,19 +293,12 @@ export const HeroSection = ({
             <div className="flex items-end">
               {tournament && tournament.status && getNextStatusAction(tournament.status) && (
                 <motion.button
-                  className={`bg-primary angular-cut text-white px-4 py-2  font-medium flex items-center gap-2 shadow-lg`}
+                  className={`bg-primary angular-cut text-white px-4 py-2 font-medium flex items-center gap-2 shadow-lg`}
                   variants={buttonVariants}
                   initial="initial"
                   whileHover="hover"
                   whileTap="tap"
-                  onClick={() => {
-                    let nextStatus;
-                    if (tournament.status === 'registration_open') nextStatus = 'registration_closed';
-                    else if (tournament.status === 'registration_closed') nextStatus = 'ongoing';
-                    else if (tournament.status === 'ongoing') nextStatus = 'completed';
-                    
-                    if (nextStatus) updateTournamentStatus(nextStatus);
-                  }}
+                  onClick={handleActionButtonClick}
                 >
                   {getNextStatusAction(tournament.status)}
                   <ArrowRight className="w-4 h-4" />

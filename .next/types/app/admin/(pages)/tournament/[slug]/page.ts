@@ -1,4 +1,4 @@
-// File: C:\Users\ce pc\Desktop\main\src\app\admin\(pages)\tournament\[slug]\page.jsx
+// File: C:\Users\sabir\Desktop\mge-admin-main\src\app\admin\(pages)\tournament\[slug]\page.jsx
 import * as entry from '../../../../../../../src/app/admin/(pages)/tournament/[slug]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

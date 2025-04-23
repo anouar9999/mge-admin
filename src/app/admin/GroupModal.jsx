@@ -176,23 +176,20 @@ const GroupModal = ({
   group,
   mockResults,
   onSaveResult,
-  teams, // Added teams prop to access team data
+  teams,
 }) => {
-  // State for filters and view options
   const [currentRound, setCurrentRound] = useState(0);
   const [statusFilter, setStatusFilter] = useState('all');
   const [sortOption, setSortOption] = useState('default');
-  console.log(group.matches[currentRound][currentRound].id);
-  // State for edit popup
+  
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [currentMatchData, setCurrentMatchData] = useState({
     roundIndex: null,
-    matchIndex: group.matches[currentRound][currentRound].id,
+    matchIndex: null,
     teamA: null,
     teamB: null,
   });
 
-  // If not open or no group, don't render
   if (!isOpen || !group) return null;
 
   // Options for filters
@@ -225,126 +222,72 @@ const GroupModal = ({
     return result.team1Score !== '-' && result.team2Score !== '-';
   };
 
-  // Open edit dialog
-  // const handleEditMatch = (roundIndex, matchIndex, team1Name, team2Name) => {
-  //   const team1 = getTeamInfo(team1Name);
-  //   const team2 = getTeamInfo(team2Name);
-  //   console.log('ere');
-  //   console.log(team1);
-
-  //   // Prepare team data for dialog
-  //   const teamA = {
-  //     name: team1Name,
-  //     logo: team1.image || 'https://placehold.co/200',
-  //   };
-
-  //   const teamB = {
-  //     name: team2Name,
-  //     logo: team2.image || 'https://placehold.co/200',
-  //   };
-
-  //   setCurrentMatchData({
-  //     roundIndex,
-  //     matchIndex,
-  //     teamA,
-  //     teamB,
-  //   });
-
-  //   setEditDialogOpen(true);
-  // };
-
   // Handle saving match result
   const handleSaveScores = (scoreA, scoreB) => {
     const { roundIndex, matchIndex } = currentMatchData;
 
-    // Create updated result object
     const updatedResult = {
       groupId: group.id,
       round: roundIndex,
-      matchIndex: 0,
-      team1Score: 1,
+      matchIndex: matchIndex,
+      team1Score: scoreA,
       team2Score: scoreB,
     };
 
-    // Call the parent component's save function
     onSaveResult(updatedResult);
   };
 
-  // Get processed matches with all relevant data
+  // Get matches for the current round
   const getProcessedMatches = () => {
-    if (!group.matches[currentRound]) return [];
+    if (!group.matches || !group.matches[currentRound]) return [];
 
-    let matches = group.matches[currentRound].map((match, matchIndex) => {
-      const team1 = getTeamInfo(match[0]);
-      const team2 = getTeamInfo(match[1]);
+    // Get matches for this round
+    const roundMatches = group.matches[currentRound];
+    
+    return roundMatches.map((match, matchIndex) => {
+      // Handle different possible match data structures
+      let team1Name, team2Name;
+      
+      if (Array.isArray(match)) {
+        [team1Name, team2Name] = match;
+      } else {
+        team1Name = match.team1_name || match.team1Name;
+        team2Name = match.team2_name || match.team2Name;
+      }
+      
+      const team1 = getTeamInfo(team1Name);
+      const team2 = getTeamInfo(team2Name);
       const result = getMatchResult(currentRound, matchIndex);
       const played = isMatchPlayed(result);
 
       return {
+        id: match.id || matchIndex,
         matchIndex,
-        team1Name: match[0],
-        team2Name: match[1],
-        team1Image: team1.image,
-        team2Image: team2.image,
-        result,
+        team1_name: team1Name,
+        team2_name: team2Name,
+        team1_logo: team1.image || team1.logo,
+        team2_logo: team2.image || team2.logo,
+        team1_score: result.team1Score,
+        team2_score: result.team2Score,
         played,
       };
+    }).filter(match => {
+      if (statusFilter === 'all') return true;
+      return statusFilter === 'played' ? match.played : !match.played;
     });
-
-    // Apply status filter
-    if (statusFilter !== 'all') {
-      const shouldBePlayed = statusFilter === 'played';
-      matches = matches.filter((match) => match.played === shouldBePlayed);
-    }
-
-    // Apply sort
-    if (sortOption !== 'default') {
-      switch (sortOption) {
-        case 'team-asc':
-          matches.sort((a, b) => a.team1Name.localeCompare(b.team1Name));
-          break;
-        case 'team-desc':
-          matches.sort((a, b) => b.team1Name.localeCompare(a.team1Name));
-          break;
-        case 'score-high':
-          matches.sort((a, b) => {
-            const aTotal = parseInt(a.result.team1Score) + parseInt(a.result.team2Score);
-            const bTotal = parseInt(b.result.team1Score) + parseInt(b.result.team2Score);
-            // Sort played matches first, then by score
-            if (a.played && !b.played) return -1;
-            if (!a.played && b.played) return 1;
-            return isNaN(bTotal) ? -1 : isNaN(aTotal) ? 1 : bTotal - aTotal;
-          });
-          break;
-        case 'score-low':
-          matches.sort((a, b) => {
-            const aTotal = parseInt(a.result.team1Score) + parseInt(a.result.team2Score);
-            const bTotal = parseInt(b.result.team1Score) + parseInt(b.result.team2Score);
-            // Sort played matches first, then by score
-            if (a.played && !b.played) return -1;
-            if (!a.played && b.played) return 1;
-            return isNaN(aTotal) ? -1 : isNaN(bTotal) ? 1 : aTotal - bTotal;
-          });
-          break;
-        default:
-          break;
-      }
-    }
-
-    return matches;
   };
 
   const processedMatches = getProcessedMatches();
-  const totalRounds = group.matches.length;
+  const totalRounds = group.matches ? group.matches.length : 0;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75">
-      <div className="w-full max-w-7xl h-[75vh] overflow-hidden bg-dark shadow-xl angular-cut">
+      <div className="w-full max-w-7xl h-[90vh] overflow-hidden bg-dark shadow-xl angular-cut">
         {/* Modal Header */}
         <div className="px-6 py-4 border-b border-secondary flex justify-between items-center">
           <h2 className="text-2xl font-custom tracking-widest text-primary flex items-center">
             <FaTrophy className="mr-2" />
-            {group.name} - Matches
+            {group.name} - Round {currentRound + 1}
           </h2>
           <button
             onClick={onClose}
@@ -375,7 +318,7 @@ const GroupModal = ({
 
             {/* Round Selection */}
             <div className="flex items-center ml-auto">
-              <div className="text-xs uppercase tracking-wider text-gray-400 mr-3  px-2 py-1 rounded-lg">
+              <div className="text-xs uppercase tracking-wider text-gray-400 mr-3 px-2 py-1 rounded-lg">
                 <FaCalendarAlt className="inline mr-1" /> ROUND
               </div>
               <div className="flex rounded-lg bg-secondary p-1">
@@ -402,11 +345,11 @@ const GroupModal = ({
         {/* Modal Body - Scrollable Content */}
         <div className="overflow-y-auto h-[calc(90vh-130px)]">
           <div className="p-6 space-y-6">
-            {group.matches.length > 0 ? (
-              group.matches.map((match) => (
+            {processedMatches.length > 0 ? (
+              processedMatches.map((match) => (
                 <InteractiveMatchCard
-                  key={`match-${currentRound}-${match.matchIndex}`}
-                  match={match[currentRound]}
+                  key={`match-${currentRound}-${match.id || match.matchIndex}`}
+                  match={match}
                   currentRound={currentRound}
                   onSaveResult={onSaveResult}
                   groupId={group.id}
@@ -434,6 +377,7 @@ const GroupModal = ({
 };
 
 export default GroupModal;
+
 const InteractiveMatchCard = ({ match, currentRound, onSaveResult, groupId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [scores, setScores] = useState({
