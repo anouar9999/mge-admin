@@ -1,7 +1,16 @@
 {
-  "/admin/(pages)/tournament/[slug]/page": "app/admin/(pages)/tournament/[slug]/page.js",
-  "/admin/(pages)/tournaments/page": "app/admin/(pages)/tournaments/page.js",
-  "/admin/(pages)/teams/page": "app/admin/(pages)/teams/page.js",
+  "/_not-found": "app/_not-found.js",
+  "/(auth)/maintenance/page": "app/(auth)/maintenance/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/admin/(pages)/edit-tournament/[id]/page": "app/admin/(pages)/edit-tournament/[id]/page.js",
+  "/admin/(pages)/match/[id]/page": "app/admin/(pages)/match/[id]/page.js",
+  "/admin/(pages)/new-tournament/page": "app/admin/(pages)/new-tournament/page.js",
+  "/admin/(pages)/settings/page": "app/admin/(pages)/settings/page.js",
   "/admin/page": "app/admin/page.js",
-  "/admin/(pages)/edit-tournament/[id]/page": "app/admin/(pages)/edit-tournament/[id]/page.js"
+  "/admin/(pages)/teams/page": "app/admin/(pages)/teams/page.js",
+  "/admin/(pages)/users/page": "app/admin/(pages)/users/page.js",
+  "/admin/(pages)/games/page": "app/admin/(pages)/games/page.js",
+  "/admin/(pages)/tournaments/page": "app/admin/(pages)/tournaments/page.js",
+  "/admin/(pages)/tournament/[slug]/page": "app/admin/(pages)/tournament/[slug]/page.js",
+  "/admin/(pages)/profile/[Player-name]/page": "app/admin/(pages)/profile/[Player-name]/page.js"
 }
